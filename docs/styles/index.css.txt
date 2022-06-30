@@ -1,0 +1,81 @@
+
+footer address
+	margin: auto
+	padding: 8px
+	font-weight: 400
+	letter-spacing: 0.5px
+	text-align: center
+	white-space: nowrap
+
+.conditional-br-1200
+	display: none
+
+(jeśli ekran ma co najmniej 1200px)
+	.conditional-br-1200
+		display: block
+
+#examples ul li
+	cursor: pointer
+	padding: 4px
+
+#examples .controls,
+#calculator .controls
+	display: flex
+	flex-direction: row
+	flex-wrap: wrap
+
+#examples .controls,
+#calculator .controls > *
+	margin: 0 8px
+	padding: 2px 8px
+
+#calculator table th,
+#calculator table td
+	white-space: nowrap
+	min-width: 40px
+
+#calculator table input
+	width: 100%
+	min-width: 80px
+	text-align: center
+	background-color: transparent
+	color: inherit
+	border: 1px solid gray
+	border-radius: 4px
+
+#calculator table .current
+	box-shadow:
+		0 0 8px 2px dodgerblue inset,
+		0 0 8px 2px dodgerblue
+
+#calculator table input.error
+	border: 1px solid red
+	box-shadow: 0px 0px 40px -20px rgba(255, 0, 0, 0.5) inset
+
+#calculator table td.warning
+	box-shadow:
+		0px 0px 8px 2px orange inset,
+		0px 0px 8px 2px orange
+
+#calculator table td.error
+	box-shadow:
+		0px 0px 8px 2px red inset,
+		0px 0px 8px 2px red
+
+#calculator .link
+	text-align: center
+	display: block
+
+#calculator.solving .link
+	display: none
+
+#calculator.expand figure.expandable
+	overflow-x: initial
+	position: relative
+
+#calculator.expand figure.expandable > *
+	overflow-x: visible
+	position: absolute
+	top: 50%
+	left: 50%
+	transform: translate(-50%, -50%)

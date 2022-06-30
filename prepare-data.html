@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+	<meta charset="UTF-8">
+	<title>Dane do strony</title>
+	<style>
+		* { 
+			font-family: 'Segoe UI';
+			box-sizing: border-box;
+			margin: 0;
+			/* outline: red dashed 1px; */
+		}
+		pre {
+			font-family: 'Courier New', Courier, monospace;
+			background-color: whitesmoke; 
+			padding: 16px;
+			white-space: pre-wrap;
+			word-wrap: break-word;
+			border: 1px dashed black;
+			margin: 8px 0;
+		}
+		pre.error {
+			background-color: salmon;
+		}
+		header, footer {
+			padding: 8px;
+			text-align: center;
+		}
+		section {
+			margin: 16px;
+		}
+		section > header {
+			display: flex;
+			align-items: baseline;
+			padding: 0;
+		}
+		h5 {
+			font-size: small; 
+			margin-left: 8px;
+		}
+	</style>
+</head>
+<body>
+	<header>
+		<i>To edit the data, see source code of this file.</i>
+	</header>
+	<section>
+		<header>
+			<h2>JSON</h2>
+			<h5>(formatted)</h5>
+		</header>
+		<pre id="json" style="max-height: 300px; overflow: scroll;"></pre>
+	</section>
+	<section>
+		<header>
+			<h2>URI plain</h2>
+		</header>
+		<pre id="uriPlain"></pre>
+	</section>
+	<section>
+		<header>
+			<h2>URI base64</h2>
+		</header>
+		<pre id="uriBase64"></pre>
+	</section>
+	<section>
+		<header>
+			<h2>URI base64</h2>
+			<h5>(btoa + unescape + encodeURIComponent)</h5>
+		</header>
+		<pre id="uriBase64Encoded"></pre>
+	</section>
+	<script>
+		/**
+		 * @typedef {number | string} NumericalExpression
+		 * @typedef {[NumericalExpression, NumericalExpression]} FractionDefinition
+		 * @typedef {NumericalExpression | FractionDefinition} PointDefinitionArgument
+		 * @typedef {{x: PointDefinitionArgument, y: PointDefinitionArgument }} PointDefinition
+		 * @typedef {{name?: string, points: PointDefinition[], function?: string, compareContext?: string}} ExampleDefinition
+		 */
+
+		const data = {
+			"examples": [
+				{
+					name: "Kwadrat: f(x) = x<sup>3</sup>",
+					points: [
+						{x: 0, y: 0},
+						{x: 2, y: 8},
+						{x: 3, y: 27},
+						{x: 5, y: 125},
+						{x: 6, y: 216},
+					],
+				},
+				{
+					name: "Sześcian: f(x) = x<sup>3</sup>",
+					function: "x^3",
+					points: [
+						{x: -4},
+						{x: -1},
+						{x: 0},
+						{x: 2},
+						{x: 3},
+						{x: 5},
+					],
+				},
+				{
+					source: 'https://www.youtube.com/watch?v=hcsBjizQ9X8',
+					points: [
+						{x: -5, y: -2},
+						{x: -1, y: 6},
+						{x: 0, y: 1},
+						{x: 2, y: 3},
+					],
+				},
+				{
+					function: "abs(sin(x))",
+					points: [
+						{x: 0},
+						{x: ["π", 6]},
+						{x: ["π", 4]},
+						{x: ["π", 3]},
+						{x: ["π", 2]},
+						{x: ["2π", 3]},
+						{x: "π"},
+						{x: ["7π", 6]},
+						{x: ["3π", 2]},
+						{x: "2π"},
+					],
+				},
+				{
+					function: "abs(sin(x))",
+					points: [
+						{x: ["i*pi", "6"]},
+						{x: ["i*pi", "6"]},
+						{x: ["i*pi", "6"]},
+						{x: ["i*pi", "6"]},
+						{x: ["i*pi", "6"]},
+						{x: ["i*pi", "6"]},
+						{x: ["i*pi", "6"]},
+						{x: ["i*pi", "6"]},
+						{x: ["i*pi", "6"]},
+						{x: ["i*pi", "6"]},
+						{x: ["i*pi", "6"]},
+						{x: ["i*pi", "6"]},
+						{x: ["i*pi", "6"]},
+					],
+				},
+				{
+					name: "Fibonacci",
+					function: "f(i-1) + f(i-2)",
+					compareContext: " ",
+					points: [
+						{x: 'i', y: 0},
+						{x: 'i', y: 1},
+						{x: 'i'},
+						{x: 'i'},
+						{x: 'i'},
+						{x: 'i'},
+						{x: 'i'},
+						{x: 'i'},
+					],
+				},
+			],
+		};
+
+		const json = JSON.stringify(data);
+		const jsonFormatted = JSON.stringify(data, null, '    ');
+		document.getElementById('json').innerText = jsonFormatted;
+
+		const uriPlain = `data:application/json,${json}`;
+		document.getElementById('uriPlain').innerText = uriPlain;
+
+		try {
+			const base64 = btoa(json);
+			const uriBase64 = `data:application/json;base64,${base64}`;
+			document.getElementById('uriBase64').innerText = uriBase64;
+		}
+		catch (e) {
+			document.getElementById('uriBase64').classList.add('error');
+			document.getElementById('uriBase64').innerText = e.toString();
+		}
+
+		const base64Encoded = btoa(unescape(encodeURIComponent(json)));
+		const uriBase64Encoded = `data:application/json;base64,${base64Encoded}`;
+		document.getElementById('uriBase64Encoded').innerText = uriBase64Encoded;
+
+		document.querySelectorAll('pre').forEach(pre => {
+			pre.addEventListener('click', () => {
+				navigator.clipboard.writeText(pre.innerText);
+				console.log('Copied to clipboard.');
+			})
+		})
+	</script>
+	<footer>
+		<i>Click on `pre` block to copy to clipboard.</i>
+	</footer>
+</body>
+</html>

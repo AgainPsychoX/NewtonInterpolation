@@ -1,0 +1,120 @@
+
+  /*********/
+ /* Maths */
+/*********/
+
+.math {
+	font-style: italic;
+	letter-spacing: 0.5px;
+}
+.math sub {
+	margin-right: 2px;
+}
+
+figure > .math {
+	font-size: larger;
+	white-space: nowrap;
+}
+
+.math-font,
+p.math,
+span.math {
+	font-family: Georgia, math, 'Times New Roman', Times, serif;
+}
+
+.big-math-operator {
+	font-size: 2em;
+	font-style: normal;
+	vertical-align: middle;
+}
+.big-math-operator-group {
+	display: inline-flex; 
+	flex-direction: column; 
+	vertical-align: middle; 
+	align-items: center;
+	font-size: 0.8em;
+}
+
+.fraction {
+	display: inline-grid;
+	vertical-align: middle;
+	align-items: center;
+	font-size: 0.8em;
+	text-align: center;
+	white-space: nowrap;
+}
+.fraction > span:nth-child(1) {
+	grid-column: 1 / 1;
+	grid-row: 1 / span 3;
+}
+.fraction > span:nth-child(5) {
+	grid-column: 3 / 3;
+	grid-row: 1 / span 3;
+}
+.fraction > span:nth-child(2),
+.fraction > span:nth-child(4) {
+	grid-column: 2 / 2;
+}
+.fraction > span:nth-child(4) {
+	border-top: solid 1px black;
+	padding: 0 2px;
+}
+.fraction > span:nth-child(1),
+.fraction > span:nth-child(3),
+.fraction > span:nth-child(5) {
+	font-size: 0;
+}
+.fraction.brackets > span:nth-child(1),
+.fraction.brackets > span:nth-child(5) {
+	font-size: inherit;
+	transform: scale(1, 2);
+	padding: 0 2px;
+	padding-bottom: 0.2em;
+}
+.fraction.decimal {
+	vertical-align: baseline;
+	font-size: inherit;
+}
+.fraction.decimal > span:nth-child(1),
+.fraction.decimal > span:nth-child(3),
+.fraction.decimal > span:nth-child(4),
+.fraction.decimal > span:nth-child(5) {
+	display: none;
+}
+.fraction.decimal.brackets > span:nth-child(1),
+.fraction.decimal.brackets > span:nth-child(5) {
+	display: inline;
+	transform: none;
+}
+
+.polynomial sup span {
+	/* Hidden '^' (i.e. x^3) to allow easy copying the polynomial */
+	font-size: 0;
+}
+
+.polynomial-grid {
+	display: grid;
+	grid-template-columns: min-content min-content min-content;
+	min-width: fit-content;
+	margin: 8px;
+	gap: 8px;
+	justify-content: center;
+	white-space: nowrap;
+}
+
+
+
+
+
+  /**************/
+ /* Dark theme */
+/**************/
+
+body.dark .fraction > span:nth-child(4) {
+	border-top: solid 1px white;
+}
+
+
+
+
+

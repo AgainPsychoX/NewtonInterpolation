@@ -1,0 +1,574 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+	<meta charset="UTF-8">
+	<title>Interpolacja metodą Newtona</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="stylesheet" href="styles/common.css">
+	<link rel="stylesheet" href="styles/math.css">
+	<link rel="stylesheet" href="styles/index.css">
+	<meta name="description" content="Interpolacja, ilorazy różnicowe, wzór interpolacyjny Newtona.">
+	<meta name="keywords" content="interpolacja newtona,metoda newtona,newton interpolation,newton method">
+</head>
+<body>
+	<header>
+		<div class="nice-container">
+			<h1>Interpolacja metodą Newtona</h1>
+		</div>
+	</header>
+	<nav>
+		<div class="nice-container">
+			<ul>
+			</ul>
+		</div>
+	</nav>
+	<main>
+		<article class="nice-container">
+			<!-- Ukryty nagłówek artykułu, żeby zaspokoić wymagania walidatorów HTML -->
+			<header style="display: none;">
+				<h2>Interpolacja metodą Newtona</h2>
+			</header>
+			<section>
+				<h2>Interpolacja</h2>
+				<p>
+					Zdarza się, że mamy do czynienia z funkcjami, dla których nie mamy określonego jasnego wzoru i znamy tylko wartości w konkretnych punktach - chcielibyśmy określić pewnego rodzaju przybliżony wzór.
+					Niektóre funkcje, pomimo określonego wzoru, nie są łatwe do policzenia (np. funkcje trygonometryczne) dla dowolnych wartości. 
+					Metody interpolacji pomagają określić przybliżone wartości danej funkcji w punktach innych niż zbadane lub łatwe do policzenia wartości.
+				</p>
+				<p>
+					Można powiedzieć, że zadaniem interpolacji jest ustalenie wzoru krzywej, funkcji, która pozwoli połączyć wszystkie zadanie punkty na wykresie.
+				</p>
+				<p>
+					Istnieje wiele sposobów interpolacji, w tym materiale opisana jest metoda interpolacji Newtona.
+				</p>
+			</section>
+			<section>
+				<h2>Konstrukcja inkrementalna</h2>
+
+				<h3>
+					Prosta
+				</h3>
+				<p>
+					Na początku, znajdźmy wielomian, którego wykres przechodzi przez pierwszy punkt. Najprościej, będzie to zwykła prosta:
+				</p>
+				<figure>
+					<p class="math">
+						P<sub>0</sub>(x) = y<sub>0</sub>
+					</p>
+				</figure>
+				<p>
+					Kolejnym krokiem jest przekształcenie tego wielomianu w taki, którego wykres będzie także zawierać drugi punkt. Otrzymamy równanie prostej przechodzącej przez dwa punkty:
+				</p>
+				<figure>
+					<p class="math">
+						P<sub>1</sub>(x) = y<sub>0</sub> + 
+						<span class="fraction" title="Kierunkowa prostej">
+							<span>(</span>
+							<span>y<sub>1</sub> - y<sub>0</sub></span>
+							<span>/</span>
+							<span>x<sub>1</sub> - x<sub>0</sub></span>
+							<span>)</span>
+						</span>
+						(x - x<sub>0</sub>)
+					</p>
+					<figcaption style="display: none;">
+						<a href="https://www.geogebra.org/calculator/yzssr7ns" target="_blank">Przykład na GeoGebra</a>
+					</figcaption>
+				</figure>
+
+				<h3>
+					Trzy punkty
+				</h3>
+				<p>
+					Sytuacja nieco komplikuje się dla kolejnych kroków. Najpierw należy zauważyć, że wielomian <span class="math">P<sub>1</sub>(x)</span> składa się z wielomianu <span class="math">P<sub>0</sub>(x)</span> oraz <span class="math">M<sub>1</sub>(x) = a (x - x<sub>0</sub>)</span> (gdzie <span class="math">a</span> to kierunkowa prostej). Podobnie, wielomiany utworzone w kolejnych krokach będą opierać się na poprzednich krokach. 
+				</p>
+				<p>
+					Musimy znaleźć taki wielomian <span class="math">P<sub>2</sub>(x)</span>, że:
+				</p>
+				<ul style="font-size: larger;">
+					<li>
+						<span class="math">
+							P<sub>2</sub>(x<sub>0</sub>) = P<sub>1</sub>(x<sub>0</sub>) + M<sub>2</sub>(x<sub>0</sub>)
+						</span>
+					</li>
+					<li>
+						<span class="math">
+							P<sub>2</sub>(x<sub>1</sub>) = P<sub>1</sub>(x<sub>1</sub>) + M<sub>2</sub>(x<sub>1</sub>)
+						</span>
+					</li>
+				</ul>
+				<p>
+					Wychodzi na to, że <span class="math">M<sub>2</sub>(x<sub>0</sub>)</span> oraz <span class="math">M<sub>2</sub>(x<sub>1</sub>)</span> muszą być równe 0. Wielomian <span class="math">M<sub>2</sub>(x)</span> musi więc przyjmować formę:
+				</p>
+				<figure>
+					<p class="math">
+						M<sub>2</sub>(x) = a<sub>2</sub>(x - x<sub>0</sub>)(x - x<sub>1</sub>)
+					</p>
+				</figure>
+				<p>
+					Podstawiając <span class="math">x := x<sub>2</sub></span> i przekształcając, możemy określić <span class="math">a<sub>2</sub></span>:
+				</p>
+				<figure>
+					<p class="math">
+						y<sub>2</sub> = P<sub>2</sub>(x<sub>2</sub>) = P<sub>1</sub>(x<sub>2</sub>) + a<sub>2</sub>(x<sub>2</sub> - x<sub>0</sub>)(x<sub>2</sub> - x<sub>1</sub>)
+					</p>
+					<p class="math">
+						a<sub>2</sub> = 
+						<span class="fraction">
+							<span>(</span>
+							<span>P<sub>2</sub>(x<sub>2</sub>) - P<sub>1</sub>(x<sub>2</sub>)</span>
+							<span>/</span>
+							<span>
+								(x<sub>2</sub> - x<sub>0</sub>)(x<sub>2</sub> - x<sub>1</sub>)
+							</span>
+							<span>)</span>
+						</span>
+					</p>
+				</figure>
+
+				<h3>
+					Kolejne kroki
+				</h3>
+				<p>
+					Łatwo zauważyć można, że kolejne współczynniki <span class="math">a<sub>i</sub></span> mogą być określone odnosząc się do poprzednich kroków:
+				</p>
+				<figure>
+					<p class="math">
+						a<sub>i</sub> = 
+						<span class="fraction">
+							<span>(</span>
+							<span>P<sub>i</sub>(x<sub>i</sub>) - P<sub>i - 1</sub>(x<sub>i - 1</sub>)</span>
+							<span>/</span>
+							<span>
+								<span class="big-math-operator">П</span>
+								<span class="big-math-operator-group">
+									<span>i - 1</span>
+									<span>j = 0</span>
+								</span>
+								(x<sub>i</sub> - x<sub>j</sub>)
+							</span>
+							<span>)</span>
+						</span>
+					</p>
+				</figure>
+				<p>
+					Taka konstrukcja interpolacji jest określana jako inkrementalna, gdzie każdy kolejny krok umożliwia dodanie kolejnego punktu do wykresu wynikowego wielomianu.
+				</p>
+
+				<!-- Przykład? -->
+
+				<p>
+					Nieco bardziej wydajnym podejściem jest użycie ilorazów różnicowych.
+				</p>
+			</section>
+			<section>
+				<h2>Ilorazy różnicowe</h2>
+				<p>
+					Ilorazy różnicowe, które opisują przyrost funkcji na danym przedziale.
+				</p>
+				<p>
+					Niech <span class="math">f: X -> Y</span> i <span class="math">x<sub>1</sub>, x<sub>2</sub> ∈ X</span>. Wtedy ilorazem różnicowym nazywamy iloraz:
+				</p>
+				<figure>
+					<p class="math">
+						<span class="fraction">
+							<span>(</span>
+							<span>f(x<sub>2</sub>) - f(x<sub>1</sub>)</span>
+							<span>/</span>
+							<span>x<sub>2</sub> - x<sub>1</sub></span>
+							<span>)</span>
+						</span>
+					</p>
+				</figure>
+
+				<h3>Uogólnienie</h3>
+				<p>
+					Ilorazem różnicowym <span class="math">n</span>-tego rzędu funkcji <span class="math">f: X -> Y</span> w punktach <span class="math">x<sub>0</sub>, x<sub>1</sub>, ...,  x<sub>n</sub> ∈ X</span> nazywamy funkcję
+				</p>
+				<figure>
+					<p class="math">
+						f[x<sub>0</sub>, x<sub>1</sub>, ..., x<sub>n</sub>] := 
+						<span class="big-math-operator-group">
+							<span>n</span>
+							<span class="big-math-operator">∑</span>
+							<span>i = 0</span>
+						</span>
+						<span class="fraction">
+							<span>(</span>
+							<span>f(x<sub>i</sub>)</span>
+							<span>/</span>
+							<span>
+								<span class="big-math-operator">П</span>
+								<span class="big-math-operator-group">
+									<span>n</span>
+									<span>j = 0</span>
+									<span>j ≠ i</span>
+								</span>
+								(x<sub>i</sub> - x<sub>j</sub>)
+							</span>
+							<span>)</span>
+						</span>
+					</p>
+				</figure>
+				<p>
+					Prawdziwy jest związek rekurencyjny:
+				</p>
+				<figure>
+					<div style="display: flex; position: relative; justify-content: center;">
+						<div style="line-height: 1em; margin-top: -0.15em; font-weight: 200;">
+							{
+							<script>
+								{
+									// Make sure '{' is properly sized
+									const div = document.scripts[document.scripts.length - 1].parentElement;
+									new ResizeObserver(() => {
+										div.style.fontSize = div.parentElement.clientHeight - 1 + 'px';
+									}).observe(div);
+								}
+							</script>
+						</div>
+						<div class="math math-font" style="padding-left: 8px; font-size: larger; display: inline-flex; flex-direction: column; text-align: left;">
+							<div>
+								f[x<sub>i</sub>] = f(x<sub>i</sub>)
+								&nbsp;&nbsp;&nbsp;
+								(0 ≤ i ≤ n)
+							</div>
+							<div>
+								f[x<sub>k</sub>, x<sub>k+1</sub>, ..., x<sub>k+m</sub>] = 
+								<span class="fraction">
+									<span>(</span>
+									<span>
+										f[x<sub>k+1</sub>, x<sub>k+2</sub>, ..., x<sub>k+m</sub>]
+										-
+										f[x<sub>k</sub>, x<sub>k+1</sub>, ..., x<sub>k+m-1</sub>]
+									</span>
+									<span>/</span>
+									<span>
+										x<sub>k+m</sub> - x<sub>k</sub>
+									</span>
+									<span>)</span>
+								</span>
+								&nbsp;&nbsp;&nbsp;
+								(0 ≤ k &lt; k + m ≤ n)
+							</div>
+						</div>
+					</div>
+				</figure>
+
+				<h3>Tabelka</h3>
+				<p>
+					Rekurencyjna zależność ilorazów różnicowych pozwala na zastosowanie tabelki do łatwego obliczenia kolejnych wartości. Dla każdego dodatniego rządu: różnicę dolnej prawej komórki i górnej prawej komórki dzielimy przez różnicę najbardziej wysuniętych na prawo po przekątnej argumentów (większy od mniejszego).
+				</p>
+				<figure>
+					<table class="nice-table">
+						<thead>
+							<tr>
+								<th rowspan="2" class="math">x<sub>i</sub></th>
+								<th rowspan="2" class="math">f[x<sub>i</sub>]</th>
+								<th colspan="4">Ilorazy różnicowe</th>
+							</tr>
+							<tr>
+								<th>Rzędu 1</th>
+								<th>Rzędu 2</th>
+								<th>Rzędu 3</th>
+								<th>Rzędu 4</th>
+							</tr>
+						</thead>
+						<tbody class="math math-font">
+							<tr>
+								<td>x<sub>0</sub></td>
+								<td>f[x<sub>0</sub>]</td>
+								<td></td>
+								<td></td>
+								<td></td>
+								<td></td>
+							</tr>
+							<tr>
+								<td></td>
+								<td></td>
+								<td>f[x<sub>0</sub>; x<sub>1</sub>]</td>
+								<td></td>
+								<td></td>
+								<td></td>
+							</tr>
+							<tr>
+								<td>x<sub>1</sub></td>
+								<td>f[x<sub>1</sub>]</td>
+								<td></td>
+								<td>f[x<sub>0</sub>; x<sub>1</sub>; x<sub>2</sub>]</td>
+								<td></td>
+								<td></td>
+							</tr>
+							<tr>
+								<td></td>
+								<td></td>
+								<td>f[x<sub>1</sub>; x<sub>2</sub>]</td>
+								<td></td>
+								<td>f[x<sub>0</sub>; x<sub>1</sub>; x<sub>2</sub>; x<sub>3</sub>]</td>
+								<td></td>
+							</tr>
+							<tr>
+								<td>x<sub>2</sub></td>
+								<td>f[x<sub>2</sub>]</td>
+								<td></td>
+								<td>f[x<sub>1</sub>; x<sub>2</sub>; x<sub>3</sub>]</td>
+								<td></td>
+								<td>f[x<sub>0</sub>; x<sub>1</sub>; x<sub>2</sub>; x<sub>3</sub>; x<sub>4</sub>]</td>
+							</tr>
+							<tr>
+								<td></td>
+								<td></td>
+								<td>f[x<sub>2</sub>; x<sub>3</sub>]</td>
+								<td></td>
+								<td>f[x<sub>1</sub>; x<sub>2</sub>; x<sub>3</sub>; x<sub>4</sub>]</td>
+								<td></td>
+							</tr>
+							<tr>
+								<td>x<sub>3</sub></td>
+								<td>f[x<sub>3</sub>]</td>
+								<td></td>
+								<td>f[x<sub>2</sub>; x<sub>3</sub>; x<sub>4</sub>]</td>
+								<td></td>
+								<td></td>
+							</tr>
+							<tr>
+								<td></td>
+								<td></td>
+								<td>f[x<sub>3</sub>; x<sub>4</sub>]</td>
+								<td></td>
+								<td></td>
+								<td></td>
+							</tr>
+							<tr>
+								<td>x<sub>4</sub></td>
+								<td>f[x<sub>4</sub>]</td>
+								<td></td>
+								<td></td>
+								<td></td>
+								<td></td>
+							</tr>
+						</tbody>
+					</table>
+				</figure>
+				<p>Można się również spotkać z alternatywnym układem: </p>
+				<figure>
+					<table class="nice-table math">
+						<thead>
+							<tr>
+								<th rowspan="2">x<sub>i</sub></th>
+								<th rowspan="2">f[x<sub>i</sub>]</th>
+								<th colspan="4" style="font-style: normal;">Ilorazy różnicowe</th>
+							</tr>
+							<tr style="font-style: normal;">
+								<th>Rzędu 1</th>
+								<th>Rzędu 2</th>
+								<th>Rzędu 3</th>
+								<th>Rzędu 4</th>
+							</tr>
+						</thead>
+						<tbody class="math-font">
+							<tr>
+								<td>x<sub>0</sub></td>
+								<td>f[x<sub>0</sub>]</td>
+								<td></td>
+								<td></td>
+								<td></td>
+								<td></td>
+							</tr>
+							<tr>
+								<td>x<sub>1</sub></td>
+								<td>f[x<sub>1</sub>]</td>
+								<td>f[x<sub>0</sub>; x<sub>1</sub>]</td>
+								<td></td>
+								<td></td>
+								<td></td>
+							</tr>
+							<tr>
+								<td>x<sub>2</sub></td>
+								<td>f[x<sub>2</sub>]</td>
+								<td>f[x<sub>1</sub>; x<sub>2</sub>]</td>
+								<td>f[x<sub>0</sub>; x<sub>1</sub>; x<sub>2</sub>]</td>
+								<td></td>
+								<td></td>
+							</tr>
+							<tr>
+								<td>x<sub>3</sub></td>
+								<td>f[x<sub>3</sub>]</td>
+								<td>f[x<sub>2</sub>; x<sub>3</sub>]</td>
+								<td>f[x<sub>1</sub>; x<sub>2</sub>; x<sub>3</sub>]</td>
+								<td>f[x<sub>0</sub>; x<sub>1</sub>; x<sub>2</sub>; x<sub>3</sub>]</td>
+								<td></td>
+							</tr>
+							<tr>
+								<td>x<sub>4</sub></td>
+								<td>f[x<sub>4</sub>]</td>
+								<td>f[x<sub>3</sub>; x<sub>4</sub>]</td>
+								<td>f[x<sub>2</sub>; x<sub>3</sub>; x<sub>4</sub>]</td>
+								<td>f[x<sub>1</sub>; x<sub>2</sub>; x<sub>3</sub>; x<sub>4</sub>]</td>
+								<td>f[x<sub>0</sub>; x<sub>1</sub>; x<sub>2</sub>; x<sub>3</sub>; x<sub>4</sub>]</td>
+							</tr>
+						</tbody>
+					</table>
+				</figure>
+
+				<h3>Interpolacja</h3>
+				<p>
+					Jak w podejściu inkrementalnym, potrzebujemy współczynników <span class="math">a<sub>i</sub></span> by skonstruować wielomian. Są one właśnie omówionymi ilorazami różnicowymi. W tabelce powyżej znajdują się one na przekątnej.
+				</p>
+				<figure>
+					<p class="math">
+						a<sub>i</sub> = f[x<sub>0</sub>, x<sub>1</sub>, ..., x<sub>i</sub>]
+					</p>
+				</figure>
+				<p>
+					Wzór na wielomian wynikowy ma więc postać:
+				</p>
+				<figure>
+					<div class="math math-font polynomial-grid">
+						<div style="grid-row: 1 / 6;">P<sub>n</sub>(x)</div>
+						<div>=</div>
+						<div>f[x<sub>0</sub>]</div>
+						<div>+</div>
+						<div>f[x<sub>0</sub>, x<sub>1</sub>] (x - x<sub>0</sub>)</div>
+						<div>+</div>
+						<div>f[x<sub>0</sub>, x<sub>1</sub>, x<sub>2</sub>] (x - x<sub>0</sub>)(x - x<sub>1</sub>)</div>
+						<div>...</div>
+						<div></div>
+						<div>+</div>
+						<div>f[x<sub>0</sub>, x<sub>1</sub>, ..., x<sub>n</sub>] (x - x<sub>0</sub>)(x - x<sub>1</sub>)...(x - x<sub>n - 1</sub>)</div>
+					</div>
+				</figure>
+				<figure>
+					<p class="math">
+						P<sub>n</sub>(x) = 
+						<span class="big-math-operator-group">
+							<span>n</span>
+							<span class="big-math-operator">∑</span>
+							<span>i = 0</span>
+						</span>
+						<span class="big-math-operator">(</span>
+						f[x<sub>0</sub>, x<sub>1</sub>, ..., x<sub>i</sub>] 
+						<span class="big-math-operator">П</span>
+						<span class="big-math-operator-group">
+							<span>n - 1</span>
+							<span>j = 0</span>
+						</span>
+						(x - x<sub>j</sub>)
+						<span class="big-math-operator">)</span>
+					</p>
+				</figure>
+			</section>
+			<section id="examples">
+				<h2>Przykłady</h2>
+				<ul></ul>
+				<div class="controls">
+					<button name="generateRandom">Generuj losowe</button>
+				</div>
+				<p style="color: gray; font-size: small; padding: 8px">
+					Kliknij na przykład, żeby pokazać w kalkulatorze poniżej.
+				</p>
+			</section>
+			<section id="calculator">
+				<h2>Kalkulator</h2>
+				<div class="controls">
+					<label>
+						<span>Liczba znanych wartości:</span>
+						<input 
+							name="points" type="number" 
+							step="1" min="2" max="10" value="4" 
+							style="width: 40px;" 
+						/>
+					</label>
+					<label>
+						<input name="showResults" type="checkbox" checked>
+						<span>Pokaż rozwiązanie</span>
+					</label>
+					<label>
+						<input name="showDetails" type="checkbox" checked>
+						<span>Pokaż szczegóły</span>
+					</label>
+					<label>
+						<input name="stepByStep" type="checkbox" checked>
+						<span>Krok po kroku</span>
+					</label>
+					<label>
+						<span>Opóźnienie (ms):</span>
+						<input 
+							name="delay" type="number" 
+							step="50" min="0" max="9950" value="0"
+							style="width: 54px;" 
+						/>
+					</label>
+
+					<button name="nextStep">Krok</button>
+				</div>
+				<figure class="expandable">
+					<table class="nice-table">
+						<thead>
+							<tr>
+								<th rowspan="2" class="math">i</th>
+								<th rowspan="2" class="math" style="width: 80px;">x<sub>i</sub></th>
+								<th rowspan="2" class="math" style="width: 80px;">f(x<sub>i</sub>)</th>
+								<th class="colspan-by-points-count" colspan="4">Ilorazy różnicowe</th>
+							</tr>
+							<tr class="th-count-by-points-count">
+								<th>Rzędu 1</th>
+								<th>Rzędu 2</th>
+								<th>Rzędu 3</th>
+								<th>Rzędu 4</th>
+							</tr>
+						</thead>
+						<tbody class="math">
+						</tbody>
+					</table>
+				</figure>
+				<figure class="expandable">
+					<output class="math polynomial-grid polynomial raw" style="text-align: left;"></output>
+				</figure>
+				<figure>
+					<output class="polynomial simplified" style="font-size: larger;"></output>
+				</figure>
+				<p class="link">
+					<a href="#" target="_blank">Sprawdź wykres na GeoGebra.org</a>
+				</p>
+			</section>
+			<!-- TODO: Notatka o możliwości użycia macierzy, https://orionquest.github.io/Numacom/lectures/interpolation.pdf -->
+			<section id="Bibliografia">
+				<h2>Bibliografia</h2>
+				<ul>
+					<li><a href="https://orionquest.github.io/Numacom/lectures/interpolation.pdf" target="_blank">Polynomial, Lagrange, and Newton Interpolation - Mridul Aanjaneya</a></li>
+					<li><a href="https://en.wikipedia.org/wiki/Newton_polynomial" target="_blank">Newton polynomial - Wikipedia</a></li>
+					<li><a href="https://pl.wikipedia.org/wiki/Interpolacja_(matematyka)" target="_blank">Interpolacja (matematyka) - Wikipedia</a></li>
+					<li><a href="https://pl.wikipedia.org/wiki/Iloraz_r%C3%B3%C5%BCnicowy" target="_blank">Iloraz różnicowy - Wikipedia</a></li>
+					<li><a href="https://pl.wikipedia.org/wiki/Interpolacyjne_metody_r%C3%B3%C5%BCnicowe" target="_blank">Interpolacyjne metody różnicowe - Wikipedia</a></li>
+					<li><a href="https://www.youtube.com/watch?v=hcsBjizQ9X8" target="_blank">Newton's Divided Differences Interpolation Polynomial Example - AF Math & Engineering, YouTube</a></li>
+					<li><a href="https://pythonnumericalmethods.berkeley.edu/notebooks/chapter17.05-Newtons-Polynomial-Interpolation.html" target="_blank">Newton’s Polynomial Interpolation - Python Numerical Methods, Berkeley.edu</a></li>
+				</ul>
+			</section>
+		</article>
+	</main>
+	<footer>
+		<div class="nice-container" style="display: flex;">
+			<address>
+				Przygotowane przez <a href="mailto:patryk.ludwikowski.7@gmail.com">Patryka Ludwikowskiego</a> <wbr/>
+				oraz <a href="mailto:dominik120801@gmail.com">Dominika Machnika</a> <wbr/>
+				w ramach <wbr/> ćwiczeń z Metod Numerycznych, <wbr/> 
+				<br class="conditional-1200"/>
+				rok studencki 2021/22 <wbr/>
+				na <a href="https://ur.edu.pl/">Uniwersytecie Rzeszowskim</a>.
+			</address>
+			<div style="float: right; font-size: 3em; padding: 8px;" id="darkMode">💡</div>
+		</div>
+	</footer>
+	<script src="scripts/structurer.js"></script>
+	<script>
+		// Link do danych przykładów
+		const examplesDataURI = 'data:application/json;base64,eyJleGFtcGxlcyI6W3sibmFtZSI6ImYoeCkgPSB4PHN1cD4zPC9zdXA+ICh4OiAwLCAyLCAzLCA1LCA2KSIsInBvaW50cyI6W3sieCI6MCwieSI6MH0seyJ4IjoyLCJ5Ijo4fSx7IngiOjMsInkiOjI3fSx7IngiOjUsInkiOjEyNX0seyJ4Ijo2LCJ5IjoyMTZ9XX0seyJuYW1lIjoiZih4KSA9IHg8c3VwPjM8L3N1cD4gKHg6IC00LCAtMSwgMCwgMiwgMywgNSkiLCJmdW5jdGlvbiI6InheMyIsInBvaW50cyI6W3sieCI6LTR9LHsieCI6LTF9LHsieCI6MH0seyJ4IjoyfSx7IngiOjN9LHsieCI6NX1dfSx7InBvaW50cyI6W3sieCI6LTUsInkiOi0yfSx7IngiOi0xLCJ5Ijo2fSx7IngiOjAsInkiOjF9LHsieCI6MiwieSI6M31dfSx7ImZ1bmN0aW9uIjoiYWJzKHNpbih4KSkiLCJwb2ludHMiOlt7IngiOjB9LHsieCI6WyLPgCIsNl19LHsieCI6WyLPgCIsNF19LHsieCI6WyLPgCIsM119LHsieCI6WyLPgCIsMl19LHsieCI6WyIyz4AiLDNdfSx7IngiOiLPgCJ9LHsieCI6WyI3z4AiLDZdfSx7IngiOlsiM8+AIiwyXX0seyJ4IjoiMs+AIn1dfSx7ImZ1bmN0aW9uIjoiYWJzKHNpbih4KSkiLCJwb2ludHMiOlt7IngiOlsiaSpwaSIsIjYiXX0seyJ4IjpbImkqcGkiLCI2Il19LHsieCI6WyJpKnBpIiwiNiJdfSx7IngiOlsiaSpwaSIsIjYiXX0seyJ4IjpbImkqcGkiLCI2Il19LHsieCI6WyJpKnBpIiwiNiJdfSx7IngiOlsiaSpwaSIsIjYiXX0seyJ4IjpbImkqcGkiLCI2Il19LHsieCI6WyJpKnBpIiwiNiJdfSx7IngiOlsiaSpwaSIsIjYiXX0seyJ4IjpbImkqcGkiLCI2Il19LHsieCI6WyJpKnBpIiwiNiJdfSx7IngiOlsiaSpwaSIsIjYiXX1dfSx7Im5hbWUiOiJGaWJvbmFjY2kiLCJmdW5jdGlvbiI6ImYoaS0xKSArIGYoaS0yKSIsInBvaW50cyI6W3sieCI6ImkiLCJ5IjowfSx7IngiOiJpIiwieSI6MX0seyJ4IjoiaSJ9LHsieCI6ImkifSx7IngiOiJpIn0seyJ4IjoiaSJ9LHsieCI6ImkifSx7IngiOiJpIn1dfV19';
+	</script>
+	<script src="scripts/Fraction.js"></script>
+	<script src="scripts/Polynomial.js"></script>
+	<script src="scripts/fractionInputs.js"></script>
+	<script src="scripts/NewtonInterpolationCalculator.js"></script>
+	<script src="scripts/index.js"></script>
+</body>
+</html>

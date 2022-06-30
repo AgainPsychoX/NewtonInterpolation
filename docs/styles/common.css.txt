@@ -1,0 +1,160 @@
+
+body
+	font-family: 'Segoe UI'
+
+(wszystko)
+	box-sizing: border-box
+	margin: 0
+
+a
+	text-decoration: none
+	color: dodgerblue
+
+a (po najechaniu kursorem)
+	color: skyblue
+
+h1, h2, h3, h4, p, ul, ol
+	margin: 0 8px 8px 8px
+	text-align: justify
+
+h1, h2, h3, h4
+	font-weight: 500
+
+section,
+article
+	margin-bottom: 40px
+
+figure
+	margin: 8px 0
+	overflow-x: auto
+
+figure > *
+	margin: 8px auto
+
+figure > img
+	display: block
+	width: auto
+	height: auto
+	max-width: 100%
+	max-height: 40vh
+
+figure > table
+	display: table
+	max-width: 100%
+	min-width: 67%
+
+figure > p,
+figure > q,
+figure > output
+	display: block
+	text-align: center
+	min-width: fit-content
+
+figure > output
+	display: block
+
+figcaption
+	text-align: center
+
+input.error
+	border: 1px solid red
+	box-shadow: inset 0px 0px 40px -20px rgba(255, 0, 0, 0.5)
+
+body
+	min-height: 100vh
+	position: relative
+
+header
+	padding: 8px
+	background-color: royalblue
+	color: white
+
+header h1
+	margin: 0
+
+nav
+	border-bottom: dashed lightblue 1px
+
+nav ul
+	display: flex
+	flex-wrap: wrap
+	list-style: none
+	margin: 0
+	padding: 0
+
+nav ul > li
+	flex-grow: 1
+
+nav ul > li a
+	display: inline-block
+	padding: 4px 12px
+	width: 100%
+
+main
+	margin: 0 auto
+	padding: 20px 0
+
+main::after
+	content: ""
+	padding-bottom: 4rem
+	display: inline-block
+
+footer
+	position: absolute
+	bottom: 0
+	width: 100%
+	height: fit-content
+	display: flex
+	justify-items: center
+	align-items: center
+	border-top: dashed lightblue 1px
+
+.nice-container
+	width: 100%
+
+(jeśli ekran ma co najmniej 800px)
+	.nice-container
+		width: 800px
+		margin-left: auto
+		margin-right: auto
+
+(jeśli ekran ma co najmniej 1200px)
+	.nice-container
+		width: calc(1200px - 32px)
+
+table.nice-table
+	border-collapse: collapse
+
+table.nice-table,
+table.nice-table > thead > tr > th,
+table.nice-table > tbody > tr > td
+	border: 1px solid black
+
+table.nice-table > thead > tr > th,
+table.nice-table > tbody > tr > td
+	padding: 4px
+	text-align: center
+
+table.nice-table > thead > tr
+	background-color: #DFEFFF
+
+table.nice-table > thead > tr > th
+	font-weight: 600
+
+table.nice-table > tbody > tr:nth-child(odd)
+	background-color: whitesmoke
+
+body.dark
+	background-color: #222222
+	color: white
+
+body.dark table.nice-table > thead > tr
+	background-color: royalblue
+
+body.dark table.nice-table,
+body.dark table.nice-table > thead > tr > th,
+body.dark table.nice-table > tbody > tr > td
+	border: 1px solid gray
+
+body.dark table.nice-table > tbody > tr:nth-child(odd)
+	background-color: #333333
